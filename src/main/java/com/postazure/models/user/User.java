@@ -1,23 +1,30 @@
 package com.postazure.models.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by postazure on 1/27/16.
  */
 
 @Entity
+@Table(name = "app_users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "created_at")
+    private String createdAt;
 
     protected User() {}
 
@@ -29,6 +36,14 @@ public class User {
 
     public long getId() {
         return id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getEmail() {
