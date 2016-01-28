@@ -2,7 +2,6 @@ package com.postazure.user;
 
 import com.postazure.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,8 +16,7 @@ public class UserService {
     @Autowired
     AuthService authService;
 
-    public void setToken(String email, String token) {
-        User user = userRepository.findFirstByEmail(email);
+    public void saveToken(User user, String token) {
         user.setToken(token);
         userRepository.save(user);
     }
@@ -32,12 +30,10 @@ public class UserService {
     }
 
     public User createUser(String firstName, String lastName, String email, String password) {
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        String hashedPassword = authService.hashPassword(password);
         User user = new User(firstName, lastName, email, hashedPassword);
         user.setToken(authService.generateToken());
         userRepository.save(user);
         return user;
     }
-
-
 }

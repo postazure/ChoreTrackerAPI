@@ -1,6 +1,5 @@
 package com.postazure.auth;
 
-import com.postazure.user.User;
 import com.postazure.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -18,20 +17,17 @@ public class AuthService {
     @Autowired
     UserService userService;
 
-    public boolean authenticate(String email, String password) {
-        User user = userService.getUser(email);
-        return BCrypt.checkpw(password, user.getPassword());
-    }
-
-    public String establishToken(String email) {
-        String token = generateToken();
-        userService.setToken(email, token);
-        return token;
+    public boolean authenticate(String providedPassword, String dbPassword) {
+        return BCrypt.checkpw(providedPassword, dbPassword);
     }
 
     public String generateToken() {
         SecureRandom secureRandom = new SecureRandom();
         return new BigInteger(130, secureRandom).toString(32);
+    }
+
+    public String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
 }

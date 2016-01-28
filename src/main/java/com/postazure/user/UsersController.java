@@ -34,10 +34,7 @@ public class UsersController {
                 userFormModel.getEmail(),
                 userFormModel.getPassword());
 
-        Map<String, String> token = Collections.singletonMap("token", user.getToken());
-
-        return token;
-
+        return Collections.singletonMap("token", user.getToken());
     }
 
 }
